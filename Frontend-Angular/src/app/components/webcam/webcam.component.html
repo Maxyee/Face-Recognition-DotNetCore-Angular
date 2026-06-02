@@ -1,0 +1,117 @@
+<div class="webcam-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Face Recognition System</h1>
+    <div class="status-badge" [class.online]="healthStatus === 'Online'" [class.offline]="healthStatus === 'Offline'">
+      <span class="status-dot"></span>
+      Backend: {{ healthStatus }}
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Video Section -->
+    <div class="video-section">
+      <div class="video-wrapper">
+        <video #video autoplay playsinline class="video-element" [class.hidden]="!isWebcamActive"></video>
+        <canvas #canvas style="display: none;"></canvas>
+        
+        <div *ngIf="!isWebcamActive" class="video-placeholder">
+          <mat-icon>videocam_off</mat-icon>
+          <p>Webcam not initialized</p>
+          <button mat-raised-button color="primary" (click)="initWebcam()">
+            <mat-icon>videocam</mat-icon>
+            Start Webcam
+          </button>
+        </div>
+
+        <div *ngIf="isProcessing" class="processing-overlay">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Processing...</p>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="video-controls" *ngIf="isWebcamActive">
+        <button mat-raised-button color="primary" (click)="capturePhotoForRegistration()" [disabled]="isProcessing">
+          <mat-icon>camera_alt</mat-icon>
+          Register New Face
+        </button>
+        <button mat-raised-button color="warn" (click)="stopWebcam()" [disabled]="isProcessing">
+          <mat-icon>stop</mat-icon>
+          Stop Camera
+        </button>
+        <button mat-raised-button (click)="restartWebcam()" [disabled]="isProcessing">
+          <mat-icon>refresh</mat-icon>
+          Restart
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section" *ngIf="verificationResult">
+      <mat-card [class.success]="verificationResult.success" [class.error]="!verificationResult.success">
+        <mat-card-header>
+          <mat-icon mat-card-avatar *ngIf="verificationResult.success">check_circle</mat-icon>
+          <mat-icon mat-card-avatar *ngIf="!verificationResult.success">error</mat-icon>
+          <mat-card-title>
+            {{ verificationResult.success ? 'Face Verified!' : 'Verification Failed' }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            {{ lastVerificationTime | date:'HH:mm:ss' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="result-details">
+            <p class="message">{{ verificationResult.message }}</p>
+            <div *ngIf="verificationResult.userId" class="user-info">
+              <strong>User ID:</strong> {{ verificationResult.userId }}
+            </div>
+            <div *ngIf="verificationResult.confidence" class="confidence-info">
+              <strong>Confidence:</strong>
+              <div class="confidence-bar">
+                <div class="confidence-fill" 
+                     [style.width.%]="verificationResult.confidence * 100"
+                     [class]="getConfidenceColor(verificationResult.confidence)">
+                </div>
+              </div>
+              <span>{{ (verificationResult.confidence * 100) | number:'1.0-0' }}%</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Registration Dialog -->
+  <div class="modal-overlay" *ngIf="showRegisterDialog">
+    <div class="modal-content">
+      <h2>Register New Face</h2>
+      
+      <div class="captured-photo" *ngIf="capturedImage">
+        <img [src]="capturedImage" alt="Captured face">
+      </div>
+      
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="userName" placeholder="Enter username" autocomplete="off">
+        <mat-icon matSuffix>person</mat-icon>
+      </mat-form-field>
+      
+      <div *ngIf="registrationSuccess" class="success-message">
+        <mat-icon>check_circle</mat-icon>
+        <p>Registration successful!</p>
+      </div>
+      
+      <div class="modal-actions">
+        <button mat-button (click)="closeRegisterDialog()" [disabled]="isProcessing">Cancel</button>
+        <button mat-raised-button color="primary" (click)="registerFace()" [disabled]="isProcessing || !userName">
+          <mat-icon *ngIf="!isProcessing">save</mat-icon>
+          <mat-spinner diameter="20" *ngIf="isProcessing"></mat-spinner>
+          Register
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

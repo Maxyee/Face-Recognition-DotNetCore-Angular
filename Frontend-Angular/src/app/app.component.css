@@ -1,0 +1,16 @@
+.spacer {
+  flex: 1;
+}
+
+.toolbar-info {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+mat-toolbar {
+  margin-bottom: 20px;
+}
+
+mat-toolbar mat-icon {
+  margin-right: 10px;
+}
