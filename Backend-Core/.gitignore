@@ -1,0 +1,177 @@
+# Build artifacts
+bin/
+obj/
+out/
+output/
+artifacts/
+packages/
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.sln.docstates
+*.psess
+*.vsp
+*.vspx
+*.ncrunchsolution
+*.log
+
+# Rider / Visual Studio Code
+.idea/
+.vs/
+.vscode/
+*.sln.iml
+*.swp
+*.swo
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# ASP.NET Core / .NET Core
+appsettings.*.json
+appsettings.*.local.json
+**/appsettings.*.json
+!**/appsettings.json
+!**/appsettings.Development.json
+
+# Logs
+logs/
+log/
+*.log
+*.htm
+*.html
+*.txt
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Node.js / npm (if using Client-Side libraries)
+node_modules/
+npm-debug.log
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Webpack / bundling
+wwwroot/dist/
+wwwroot/lib/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+*.coveragecoverage
+*.cache
+*.dotCover
+*.TestResults.xml
+*.testresult
+
+# Code coverage
+coverlet/
+coverage/
+*.json
+*.xml
+
+# Publish profiles
+*.pubxml.user
+*.pubxml.local
+*.publishproj
+
+# Azure Functions
+local.settings.json
+*.local.settings.json
+
+# Entity Framework Migration files (optional - uncomment if needed)
+# **/Migrations/*.Designer.cs
+# **/Migrations/*.cs
+
+# Python (if using Python scripts)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Docker
+docker-compose*.override.yml
+*.dockerignore
+.DS_Store
+
+# Global and temporary files
+*.tmp
+*.temp
+*.cache
+*.vsidx
+*.lock.json
+project.lock.json
+
+# NuGet
+*.nupkg
+*.snupkg
+nuget.exe
+.nuget/
+.nuget.targets
+*.nuget.props
+*.nuget.targets
+
+# Paket
+.paket/paket.exe
+.paket/paket.bootstrapper.exe
+paket-files/
+
+# Diagnostic files
+*.etl
+*.diagsession
+*.html
+
+# Backup files
+*~
+*.bak
+*.backup
+
+# Secret management
+secrets.json
+**/secrets.json
+*secrets*.json
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+*.swp
+*.swo
+
+# JetBrains Rider
+_ReSharper.Caches/
+.Rider/
+
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
