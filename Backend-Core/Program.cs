@@ -1,5 +1,6 @@
 using System.Text;
 using Face_Recognition_Demo.Data;
+using Face_Recognition_Demo.Models;
 using Face_Recognition_Demo.Helpers;
 using Face_Recognition_Demo.Hubs;
 using Face_Recognition_Demo.Services;

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Face_Recognition_Demo.Models;
 
 namespace Face_Recognition_Demo.Services
 {

@@ -1,0 +1,80 @@
+# .NET Core build outputs
+**/bin/
+**/obj/
+**/TestResults/
+
+# User-specific files
+*.user
+*.suo
+*.vssscc
+*.sln.docstates
+*.userosscache
+*.vs/
+.vs/
+.vscode/
+.idea/
+.DS_Store
+
+# Test coverage reports
+**/coverage/
+**/TestResults/
+*.coverage
+*.coveragexml
+*.coveragejson
+*.lcov
+*.opencover
+*.dotCover
+*.netcoverage
+*.visualcoverage
+*.visualcoveragexml
+*.trx
+*.junit.xml
+*.junit
+TestResult.xml
+
+# NuGet packages
+**/packages/
+**/node_modules/
+*.nupkg
+
+# Package Manager lock files
+project.lock.json
+packages.lock.json
+
+# Environment files
+.env
+.env.*
+appsettings.*.json
+!appsettings.Development.json
+!appsettings.Test.json
+!appsettings.Production.json
+
+# Logs
+*.log
+*.logs
+**/logs/
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Database files
+*.db
+*.mdf
+*.ldf
+*.sdf
+*.sqlite
+*.sqlite3
+
+# Certificates
+*.pfx
+*.p12
+*.pem
+*.crt
+*.key
+
+# IDE files
+*.swp
+*.swo
+*.swn

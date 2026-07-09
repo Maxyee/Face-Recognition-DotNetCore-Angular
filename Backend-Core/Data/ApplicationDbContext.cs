@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Face_Recognition_Demo.Models;
 
 namespace Face_Recognition_Demo.Data
 {

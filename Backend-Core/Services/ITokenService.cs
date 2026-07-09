@@ -1,3 +1,5 @@
+using Face_Recognition_Demo.Models;
+
 namespace Face_Recognition_Demo.Services
 {
     public interface ITokenService

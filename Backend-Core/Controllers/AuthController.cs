@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Face_Recognition_Demo.Services;
 using Microsoft.AspNetCore.Identity;
 using Face_Recognition_Demo.DTOs;
+using Face_Recognition_Demo.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
 using System.Security.Claims;
@@ -22,7 +23,7 @@ namespace Face_Recognition_Demo.Controllers
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
             SignInManager<User> signInManager,
-            JwtService jwtService,
+            IJwtService jwtService,
             ILogger<AuthController> logger)
         {
             _userManager = userManager;

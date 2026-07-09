@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Face_Recognition_Demo.Models;
 
 namespace Face_Recognition_Demo.Helpers
 {

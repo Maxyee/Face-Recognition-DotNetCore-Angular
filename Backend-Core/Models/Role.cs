@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Face_Recognition_Demo
+namespace Face_Recognition_Demo.Models
 {
     public class Role : IdentityRole
     {

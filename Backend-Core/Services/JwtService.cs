@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using Face_Recognition_Demo.Models;
+using Face_Recognition_Demo.Services;
 
 namespace Face_Recognition_Demo.Services
 {
