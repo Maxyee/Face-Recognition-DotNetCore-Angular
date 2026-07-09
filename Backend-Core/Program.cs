@@ -72,7 +72,7 @@ namespace Face_Recognition_Demo
             });
 
             // Register services
-            builder.Services.AddScoped<JwtService>();
+            builder.Services.AddScoped<IJwtService, JwtService>();
 
             // Add CORS
             builder.Services.AddCors(options =>

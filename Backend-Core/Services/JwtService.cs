@@ -6,16 +6,33 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Face_Recognition_Demo.Services
 {
-    public class JwtService
+    public class JwtService : IJwtService
     {
         private readonly IConfiguration _configuration;
+        private readonly TokenValidationParameters _tokenValidationParameters;
 
         public JwtService(IConfiguration configuration)
         {
             _configuration = configuration;
+
+            // Initialize token validation parameters once
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                _configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured")));
+
+            _tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = key,
+                ValidateIssuer = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = _configuration["Jwt:Audience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
         }
 
-        public string GenerateToken(User user, IList<string> roles)
+       public string GenerateToken(User user, IList<string> roles)
         {
             var claims = new List<Claim>
             {
@@ -66,22 +83,87 @@ namespace Face_Recognition_Demo.Services
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                     _configuration["Jwt:Secret"] ?? throw new InvalidOperationException("JWT Secret not configured"))),
-                ValidateLifetime = false,
+                ValidateLifetime = false, // Don't validate expiration
                 ValidIssuer = _configuration["Jwt:Issuer"],
-                ValidAudience = _configuration["Jwt:Audience"]
+                ValidAudience = _configuration["Jwt:Audience"],
+                ClockSkew = TimeSpan.Zero
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
             
-            if (securityToken is not JwtSecurityToken jwtSecurityToken || 
-                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, 
-                StringComparison.InvariantCultureIgnoreCase))
+            try
             {
-                throw new SecurityTokenException("Invalid token");
-            }
+                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+                
+                if (securityToken is not JwtSecurityToken jwtSecurityToken || 
+                    !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, 
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    throw new SecurityTokenException("Invalid token");
+                }
 
-            return principal;
+                return principal;
+            }
+            catch (Exception ex)
+            {
+                throw new SecurityTokenException($"Token validation failed: {ex.Message}", ex);
+            }
+        }
+
+        public bool ValidateToken(string token)
+        {
+            if (string.IsNullOrEmpty(token))
+                return false;
+
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var principal = tokenHandler.ValidateToken(token, _tokenValidationParameters, out SecurityToken securityToken);
+                
+                return principal != null && securityToken != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public DateTime? GetTokenExpiration(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+                
+                var expClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
+                if (expClaim != null && long.TryParse(expClaim.Value, out long expSeconds))
+                {
+                    var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    return epoch.AddSeconds(expSeconds);
+                }
+                
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public string? GetUserIdFromToken(string token)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var jwtToken = tokenHandler.ReadJwtToken(token);
+                
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+                return userIdClaim?.Value;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Face_Recognition_Demo.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly JwtService _jwtService;
+        private readonly IJwtService _jwtService;
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(
